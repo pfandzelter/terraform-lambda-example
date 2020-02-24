@@ -1,6 +1,6 @@
-# Terraform + Golang AWS Lambda + API Gateway
+# Terraform + Golang AWS Lambda
 
-This is a minimal Hello World example of deploying an HTTP API backed by an AWS Lambda function. The function is written in Go and deployment is automated with Terraform.
+This is a minimal Hello World example of deploying a AWS Lambda function. The function is written in Go and deployment is automated with Terraform.
 
 - [Prerequisites](#prerequisites)
 - [Usage](#usage)
@@ -51,13 +51,12 @@ Run `make` to build and deploy an API:
 $ make
 ```
 
-In the process Terraform will ask you for a confirmation, so type `yes`. Everything should finish in less than a minute! After this you can play with the API:
+In the process Terraform will ask you for a name for your deployment, you can enter "go-lambda" for example. Type `yes` when Terraform asks your for confirmation. Everything should finish in less than a minute!
+
+If you're unsure, you can also run `make plan` to see what the effects of your deployment would be:
 
 ```console
-$ curl -fsSL $(terraform output url)?name=world
-Hello, world!
-$ curl -fsSL $(terraform output url)?name=lambda
-Hello, lambda!
+$ make plan
 ```
 
 Cleanup:
@@ -66,6 +65,8 @@ Cleanup:
 $ make clean
 ```
 
+Make sure to enter the same variable values as during deployment!
+
 ### About the Makefile
 
 The Makefile is for convenience and does nothing special. It just runs following commands for you:
@@ -73,8 +74,8 @@ The Makefile is for convenience and does nothing special. It just runs following
 ```console
 $ terraform init
 $ go get .
-$ GOOS=linux GOARCH=amd64 go build -o hello
-$ zip hello.zip hello
+$ GOOS=linux GOARCH=amd64 go build -o bin
+$ zip bin.zip bin
 $ terraform apply
 $ terraform destroy
 ```
@@ -85,12 +86,6 @@ $ terraform destroy
 
 - [AWS Lambda Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
 - [Building Lambda Functions](https://docs.aws.amazon.com/lambda/latest/dg/lambda-app.html)
-
-### API Gateway
-
-- [AWS API Gateway Developer Guide](https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html)
-- [Build an API Gateway API with Lambda Integration](https://docs.aws.amazon.com/apigateway/latest/developerguide/getting-started-with-lambda-integration.html)
-- [Deploying an API in Amazon API Gateway](https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-deploy-api.html)
 
 ### Terraform
 

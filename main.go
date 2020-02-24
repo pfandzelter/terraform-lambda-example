@@ -1,29 +1,14 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
+	"context"
+	"log"
 
-	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
-// The input type and the output type are defined by the API Gateway.
-func handleRequest(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	name, ok := req.QueryStringParameters["name"]
-	if !ok {
-		res := events.APIGatewayProxyResponse{
-			StatusCode: http.StatusBadRequest,
-		}
-		return res, nil
-	}
-
-	res := events.APIGatewayProxyResponse{
-		StatusCode: http.StatusOK,
-		Headers:    map[string]string{"Content-Type": "text/plain; charset=utf-8"},
-		Body:       fmt.Sprintf("Hello, %s!\n", name),
-	}
-	return res, nil
+func handleRequest(ctx context.Context) {
+	log.Print("Hello Gopher!")
 }
 
 func main() {

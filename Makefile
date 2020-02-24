@@ -1,23 +1,22 @@
-.PHONY: test clean
+.PHONY: deploy plan clean
 
-test: deploy.done
-	curl -fsSL -D - "$$(terraform output url)?name=Lambda"
+deploy: bin.zip main.tf init.done
+	terraform apply
+
+plan: bin.zip main.tf init.done
+	terraform plan
 
 clean:
 	terraform destroy
-	rm -f init.done deploy.done hello.zip hello
+	rm -f bin.zip bin
 
 init.done:
 	terraform init
 	touch $@
 
-deploy.done: init.done main.tf hello.zip
-	terraform apply
-	touch $@
+bin.zip: bin
+	zip -j $@ $<
 
-hello.zip: hello
-	zip $@ $<
-
-hello: main.go
+bin: main.go
 	go get .
 	GOOS=linux GOARCH=amd64 go build -o $@
